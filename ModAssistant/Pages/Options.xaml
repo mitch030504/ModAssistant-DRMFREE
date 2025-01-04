@@ -346,12 +346,6 @@
             HorizontalAlignment="Left"
             Orientation="Horizontal">
                 <Button
-                Height="30"
-                Margin="5"
-                Padding="5"
-                Click="OpenLogsDirButton_Click"
-                Content="{DynamicResource Options:OpenLogsButton}" />
-                <Button
                 x:Name="OpenAppData"
                 Height="30"
                 Margin="5"

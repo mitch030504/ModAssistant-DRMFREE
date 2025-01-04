@@ -26,11 +26,10 @@ namespace ModAssistant
         public class Constants
         {
             public const string BeatSaberAPPID = "620980";
-            public const string BeatModsAPIUrl = "https://beatmods.com/api/v1/";
-            public const string TeknikAPIUrl = "https://api.teknik.io/v1/";
             public const string BeatModsURL = "https://beatmods.com";
-            public const string BeatModsVersions = "https://versions.beatmods.com/versions.json";
-            public const string BeatModsAlias = "https://alias.beatmods.com/aliases.json";
+            public const string BeatModsAPIUrl = BeatModsURL + "/api/beatmods/";
+            public const string BeatModsVersions = BeatModsURL + "/api/beatmods/versions";
+            public const string BeatModsAlias = BeatModsURL + "/api/beatmods/aliases";
             public const string WeebCDNAPIURL = "https://waifu.pics/api/sfw/";
             public const string BeatModsModsOptions = "mod?status=approved";
             public const string MD5Spacer = "                                 ";
@@ -42,20 +41,6 @@ namespace ModAssistant
                 '\u000f', '\u0010', '\u0011', '\u0012', '\u0013', '\u0014', '\u0015', '\u0016',
                 '\u0017', '\u0018', '\u0019', '\u001a', '\u001b', '\u001c', '\u001d', '\u001f',
             };
-        }
-
-        public class TeknikPasteResponse
-        {
-            public Result result;
-            public class Result
-            {
-                public string id;
-                public string url;
-                public string title;
-                public string syntax;
-                public DateTime? expiration;
-                public string password;
-            }
         }
 
         public class WeebCDNRandomResponse

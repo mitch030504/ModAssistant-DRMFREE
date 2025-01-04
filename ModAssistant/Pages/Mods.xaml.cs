@@ -562,6 +562,12 @@ namespace ModAssistant.Pages
             {
                 foreach (Mod.Dependency dependency in dependent.dependencies)
                 {
+                    if(dependency.Mod == null)
+                    {
+                        dependent.ListItem.IsEnabled = false;
+                        continue;
+                    }
+
                     if (dependency.Mod.ListItem.IsEnabled)
                     {
                         dependency.Mod.ListItem.PreviousState = dependency.Mod.ListItem.IsSelected;
