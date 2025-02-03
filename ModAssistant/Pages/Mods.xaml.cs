@@ -186,8 +186,10 @@ namespace ModAssistant.Pages
             GetBSIPAVersion();
             CheckInstallDir("IPA/Pending/Plugins");
             CheckInstallDir("IPA/Pending/Libs");
+            CheckInstallDir("IPA/Pending/Libs/Native");
             CheckInstallDir("Plugins");
             CheckInstallDir("Libs");
+            CheckInstallDir("Libs/Native");
         }
 
         public async Task GetAllMods()
@@ -560,6 +562,12 @@ namespace ModAssistant.Pages
             {
                 foreach (Mod.Dependency dependency in dependent.dependencies)
                 {
+                    if(dependency.Mod == null)
+                    {
+                        dependent.ListItem.IsEnabled = false;
+                        continue;
+                    }
+
                     if (dependency.Mod.ListItem.IsEnabled)
                     {
                         dependency.Mod.ListItem.PreviousState = dependency.Mod.ListItem.IsSelected;

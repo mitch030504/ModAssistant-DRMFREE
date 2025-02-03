@@ -196,62 +196,6 @@ namespace ModAssistant.Pages
             Properties.Settings.Default.Save();
         }
 
-        private async void OpenLogsDirButton_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                MainWindow.Instance.MainText = $"{Application.Current.FindResource("Options:UploadingLog")}...";
-                await Task.Run(async () => await UploadLog());
-
-                Process.Start(LogURL);
-                Utils.SetClipboard(LogURL);
-                MainWindow.Instance.MainText = (string)Application.Current.FindResource("Options:LogUrlCopied");
-            }
-            catch (Exception exception)
-            {
-                MainWindow.Instance.MainText = $"{Application.Current.FindResource("Options:LogUploadFailed")}.";
-
-                string title = (string)Application.Current.FindResource("Options:LogUploadFailed:Title");
-                string body = (string)Application.Current.FindResource("Options:LogUploadFailed:Body");
-                MessageBox.Show($"{body}\n ================= \n" + exception, title);
-                Utils.OpenFolder(Path.Combine(InstallDirectory, "Logs"));
-            }
-        }
-
-        private async Task UploadLog()
-        {
-            const string DateFormat = "yyyy-mm-dd HH:mm:ss";
-            DateTime now = DateTime.Now;
-            string logPath = Path.GetDirectoryName(ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.PerUserRoamingAndLocal).FilePath);
-            string Log = Path.Combine(logPath, "log.log");
-            string GameLog = File.ReadAllText(Path.Combine(InstallDirectory, "Logs", "_latest.log"));
-            string Separator = File.Exists(Log) ? $"\n\n=============================================\n============= Mod Assistant Log =============\n=============================================\n\n" : string.Empty;
-            string ModAssistantLog = File.Exists(Log) ? File.ReadAllText(Log) : string.Empty;
-
-            var nvc = new List<KeyValuePair<string, string>>()
-            {
-                new KeyValuePair<string, string>("title", $"_latest.log ({now.ToString(DateFormat)})"),
-                new KeyValuePair<string, string>("expireUnit", "hour"),
-                new KeyValuePair<string, string>("expireLength", "5"),
-                new KeyValuePair<string, string>("code", $"{GameLog}{Separator}{ModAssistantLog}"),
-            };
-
-            string[] items = new string[nvc.Count];
-
-            for (int i = 0; i < nvc.Count; i++)
-            {
-                KeyValuePair<string, string> item = nvc[i];
-                items[i] = WebUtility.UrlEncode(item.Key) + "=" + WebUtility.UrlEncode(item.Value);
-            }
-
-            StringContent content = new StringContent(string.Join("&", items), null, "application/x-www-form-urlencoded");
-            HttpResponseMessage resp = await Http.HttpClient.PostAsync(Utils.Constants.TeknikAPIUrl + "Paste", content);
-            string body = await resp.Content.ReadAsStringAsync();
-
-            Utils.TeknikPasteResponse TeknikResponse = Http.JsonSerializer.Deserialize<Utils.TeknikPasteResponse>(body);
-            LogURL = TeknikResponse.result.url;
-        }
-
         private void OpenAppDataButton_Click(object sender, RoutedEventArgs e)
         {
             string location = Path.Combine(
